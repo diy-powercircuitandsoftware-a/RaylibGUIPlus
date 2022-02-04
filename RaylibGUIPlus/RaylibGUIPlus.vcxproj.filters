@@ -16,18 +16,30 @@
     <Filter Include="Header Files\Properties">
       <UniqueIdentifier>{6c7a5419-d2a8-4ae7-addd-50fc683d27cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Test">
+      <UniqueIdentifier>{4341e992-4c55-4f3d-8d33-b1989311c4a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="GUITextBox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Properties\Alignment.h">
+    <ClInclude Include="src\Properties\Alignment.h">
       <Filter>Header Files\Properties</Filter>
     </ClInclude>
+    <ClInclude Include="src\GUITextBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUIButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Properties\Event.h">
+      <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUICheckbox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test\Test.cpp">
+      <Filter>Source Files\Test</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

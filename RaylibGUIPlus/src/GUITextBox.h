@@ -1,25 +1,27 @@
 #ifndef GUITextBox_H
 #define GUITextBox_H
-#include "lib/raylib.h"
+#include "raylib.h"
 #include "Properties/Alignment.h"
+#include "Properties/Event.h"
 #include <string>
 #include <iostream>
-#include <functional>
+#include <regex>
+
  
 namespace RaylibGUIPlus {
 
-typedef enum TextBoxType { Text, Password } TextBoxType;
+typedef enum TextBoxType { Text, Password,Number } TextBoxType;
 
 	class GUITextBox
 {
 public:
 	
 	GUITextBox();
-	GUITextBox(Rectangle rect);
-	 
+	GUITextBox(Rectangle rect);	 
 	void AdjustmentHeight();
 	Color BackgroundColor = WHITE;
 	Color BorderColor = BLACK;
+	Event Event;
 	Color TextColor = BLACK;
 	int BorderSize = 1;
 	Font Font = GetFontDefault();
@@ -32,7 +34,7 @@ public:
 	TextBoxType TextBoxType= TextBoxType::Text;
 private:
 	bool focus = false;
-	std::function<void(GUITextBox*)> callback;
+	 
 };
 	GUITextBox::GUITextBox() {
 
@@ -62,15 +64,17 @@ private:
 			this->Position.height,
 			this->BackgroundColor);
 			Vector2 mousePoint = GetMousePosition();
-
-		if (CheckCollisionPointRec(mousePoint, this->Position) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+			bool collision = CheckCollisionPointRec(mousePoint, this->Position);
+			bool mousepress = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
+		if (collision && mousepress) {
 			this->focus = true;
-
+			
 		}
-		else if (!CheckCollisionPointRec(mousePoint, this->Position) && IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+		else if (!collision && mousepress) {
 			this->focus = false;
 		}
-
+		this->Event.MouseDown = collision && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
+		this->Event.KeyDown = false;
 		if (!this->ReadOnly && this->focus) {
 
 			if ((this->Value.length() < (this->MaxLength - 1)) && (!IsKeyPressed(KEY_BACKSPACE))) {
@@ -81,24 +85,60 @@ private:
 					const char* textUTF8 = CodepointToUTF8(key, &byteSize);
 					for (int i = 0; i < byteSize; i++)
 					{
-						this->Value = this->Value + textUTF8[i];
+						if (this->TextBoxType == TextBoxType::Number) {
+							if (isdigit(textUTF8[i])) {
+								this->Value = this->Value + textUTF8[i];
+							}
+							
+						}
+						else {
+							this->Value = this->Value + textUTF8[i];
+						}
+						
 					}
-
+					
 				}
+				 this->Event.KeyDown = key > 0;
 
 			}
 			else if (IsKeyPressed(KEY_BACKSPACE) && this->Value.length() > 0) {
 				this->Value.pop_back();
+				this->Event.KeyDown = true;
 			}
-			if (IsKeyPressed(KEY_ENTER)) {
-			 
+			if ((IsKeyDown(KEY_LEFT_CONTROL)|| IsKeyDown(KEY_RIGHT_CONTROL))&& IsKeyPressed(KEY_V)) {
+				std::string input= GetClipboardText();
+				if (this->TextBoxType==TextBoxType::Number) {	
+					if (input != "") {
+						std::regex integer("(\\+|-)?[[:digit:]]+");
+						if (regex_match(input, integer)) {
+							this->Value = this->Value+ input;
+						}
+						else {
+							return;
+						}
+					}
+					 
+				}
+				else {
+					this->Value = this->Value+input;
+				}
+				
+				do {
+						this->Value.pop_back();
+				} while (this->Value.length()>0 &&this->Value.length() > this->MaxLength-1);
+			  
 			}
+			else if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_C)&& !TextBoxType::Password) {				 
+				SetClipboardText(this->Value.c_str());
+			}
+		
 		}
 		std::string clonetext = "";
-		if (this->TextBoxType == TextBoxType::Text) {
+		if (this->TextBoxType == TextBoxType::Password) {
+			clonetext.append(this->Value.length(), '*');
+		}
+		else {
 			clonetext = this->Value;
-		} else if (this->TextBoxType == TextBoxType::Password) {
-			 clonetext.append(this->Value.length(), '*');
 		}
 		
 		Vector2 textpos;

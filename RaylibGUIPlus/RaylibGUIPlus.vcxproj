@@ -116,6 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\micro\OneDrive\RaylibGUIPlus\RaylibGUIPlus\RaylibGUIPlus\lib;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,11 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp" />
+    <ClInclude Include="src\GUIButton.h" />
+    <ClInclude Include="src\GUICheckbox.h" />
+    <ClInclude Include="src\GUITextBox.h" />
+    <ClInclude Include="src\Properties\Alignment.h" />
+    <ClInclude Include="src\Properties\Event.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GUITextBox.h" />
-    <ClInclude Include="Properties\Alignment.h" />
+    <ClCompile Include="test\Test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
