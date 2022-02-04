@@ -13,9 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Properties">
+      <UniqueIdentifier>{6c7a5419-d2a8-4ae7-addd-50fc683d27cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="RaylibGUIPlus.cpp">
+    <ClCompile Include="Test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,8 +26,8 @@
     <ClInclude Include="GUITextBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Alignment.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Properties\Alignment.h">
+      <Filter>Header Files\Properties</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
