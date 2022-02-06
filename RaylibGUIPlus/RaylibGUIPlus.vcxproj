@@ -142,11 +142,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataUI\ListItem.h" />
     <ClInclude Include="src\GUIButton.h" />
-    <ClInclude Include="src\GUICheckbox.h" />
+    <ClInclude Include="src\GUICheckBox.h" />
+    <ClInclude Include="src\GuiDropDownBox.h" />
     <ClInclude Include="src\GUITextBox.h" />
     <ClInclude Include="src\Properties\Alignment.h" />
     <ClInclude Include="src\Properties\Event.h" />
+    <ClInclude Include="test\raygui.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\Test.cpp" />

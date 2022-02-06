@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Test">
       <UniqueIdentifier>{4341e992-4c55-4f3d-8d33-b1989311c4a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DataUI">
+      <UniqueIdentifier>{a7b571ed-52b6-4fe7-992e-a3a2bc5063c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\test">
+      <UniqueIdentifier>{50df4b62-0241-4217-a793-95f9bea7d564}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Properties\Alignment.h">
@@ -33,8 +39,17 @@
     <ClInclude Include="src\Properties\Event.h">
       <Filter>Header Files\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="src\GUICheckbox.h">
+    <ClInclude Include="src\GUICheckBox.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GuiDropDownBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataUI\ListItem.h">
+      <Filter>Header Files\DataUI</Filter>
+    </ClInclude>
+    <ClInclude Include="test\raygui.h">
+      <Filter>Header Files\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

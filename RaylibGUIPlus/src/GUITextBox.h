@@ -17,6 +17,7 @@ typedef enum TextBoxType { Text, Password,Number } TextBoxType;
 public:
 	
 	GUITextBox();
+	~GUITextBox();
 	GUITextBox(Rectangle rect);	 
 	void AdjustmentHeight();
 	Color BackgroundColor = WHITE;
@@ -34,10 +35,15 @@ public:
 	TextBoxType TextBoxType= TextBoxType::Text;
 private:
 	bool focus = false;
+	int insertindex = -1;
 	 
 };
+
 	GUITextBox::GUITextBox() {
 
+	}
+	GUITextBox::~GUITextBox() {
+		UnloadFont(this->Font);
 	}
 	GUITextBox::GUITextBox(Rectangle rect)
 	{
@@ -50,6 +56,7 @@ private:
 	}
 	void GUITextBox::Render()
 	{
+		this->Event.Reset();
 		DrawRectangle(
 			this->Position.x- this->BorderSize,
 			this->Position.y- this->BorderSize,
@@ -74,7 +81,7 @@ private:
 			this->focus = false;
 		}
 		this->Event.MouseDown = collision && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
-		this->Event.KeyDown = false;
+		 
 		if (!this->ReadOnly && this->focus) {
 
 			if ((this->Value.length() < (this->MaxLength - 1)) && (!IsKeyPressed(KEY_BACKSPACE))) {
@@ -87,12 +94,21 @@ private:
 					{
 						if (this->TextBoxType == TextBoxType::Number) {
 							if (isdigit(textUTF8[i])) {
-								this->Value = this->Value + textUTF8[i];
+								if (insertindex == -1) {
+									this->Value = this->Value + textUTF8[i];
+								}
+								else {
+								}
+								
 							}
 							
 						}
 						else {
-							this->Value = this->Value + textUTF8[i];
+							if (insertindex == -1) {
+								this->Value = this->Value + textUTF8[i];
+							}
+							else {
+							}
 						}
 						
 					}
@@ -108,31 +124,31 @@ private:
 			if ((IsKeyDown(KEY_LEFT_CONTROL)|| IsKeyDown(KEY_RIGHT_CONTROL))&& IsKeyPressed(KEY_V)) {
 				std::string input= GetClipboardText();
 				if (this->TextBoxType==TextBoxType::Number) {	
-					if (input != "") {
 						std::regex integer("(\\+|-)?[[:digit:]]+");
 						if (regex_match(input, integer)) {
-							this->Value = this->Value+ input;
+							if (insertindex == -1) {
+								this->Value = this->Value + input;
+							}
+							else {
+							}
+							
 						}
-						else {
-							return;
-						}
-					}
-					 
 				}
 				else {
 					this->Value = this->Value+input;
 				}
-				
-				do {
-						this->Value.pop_back();
-				} while (this->Value.length()>0 &&this->Value.length() > this->MaxLength-1);
-			  
+				while (this->Value.length() > 0 && this->Value.length() > this->MaxLength - 1) {
+					this->Value.pop_back();
+				}
+			 
 			}
 			else if ((IsKeyDown(KEY_LEFT_CONTROL) || IsKeyDown(KEY_RIGHT_CONTROL)) && IsKeyPressed(KEY_C)&& !TextBoxType::Password) {				 
 				SetClipboardText(this->Value.c_str());
 			}
+			 
 		
 		}
+		 
 		std::string clonetext = "";
 		if (this->TextBoxType == TextBoxType::Password) {
 			clonetext.append(this->Value.length(), '*');
@@ -144,13 +160,11 @@ private:
 		Vector2 textpos;
 		textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 0);
 
-		if (textpos.x > this->Position.width) {
-			do {
-
-				clonetext.erase(0, 1);
-				textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 1);
-			} while (textpos.x > this->Position.width);
-		}
+		while (textpos.x > this->Position.width) {
+			clonetext.erase(0, 1);
+			textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 1);
+		} 
+		 
 		Vector2 startdraw;
 		if (this->TextAlignment == Alignment::Center) {
 
@@ -193,6 +207,10 @@ private:
 			}
 			DrawLineEx(startdraw, (Vector2) { startdraw.x, startdraw.y + textpos.y }, this->Font.baseSize*0.1, this->TextColor);
 			
+			if (collision && mousepress) {
+
+			}
+
 		}
 
 

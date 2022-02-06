@@ -8,13 +8,12 @@
  
  
 namespace RaylibGUIPlus {
- 
-
-	class GUIButton
+ class GUIButton
 {
 public:
 	
 	GUIButton();
+	~GUIButton();
 	GUIButton(Rectangle rect);
 	 
 	void AdjustmentSizes();
@@ -35,6 +34,9 @@ public:
 	GUIButton::GUIButton() {
 
 	}
+	GUIButton::~GUIButton() {
+		UnloadFont(this->Font);
+	}
 	GUIButton::GUIButton(Rectangle rect)
 	{
 		this->Position = rect;
@@ -46,6 +48,7 @@ public:
 	}
 	void GUIButton::Render()
 	{
+		this->Event.Reset();
 		DrawRectangle(
 			this->Position.x- this->BorderSize,
 			this->Position.y- this->BorderSize,
@@ -65,12 +68,12 @@ public:
 		Vector2 textpos;
 		textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 0);
 
-		if (textpos.x > this->Position.width) {
-			do {
+		 
+			while (textpos.x > this->Position.width) {
 				clonetext.erase(0, 1);
 				textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 1);
-			} while (textpos.x > this->Position.width);
-		}
+			}  
+		 
 		Vector2 startdraw;
 		if (this->TextAlignment == Alignment::Center) {
 			float posx;

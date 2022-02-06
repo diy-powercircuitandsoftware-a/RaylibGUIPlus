@@ -1,5 +1,5 @@
-#ifndef GUICheckbox_H
-#define GUICheckbox_H
+#ifndef GUICheckBox_H
+#define GUICheckBox_H
 #include "raylib.h"
 #include "Properties/Event.h"
 #include <string>
@@ -7,12 +7,13 @@
  
  
 namespace RaylibGUIPlus {
-	class GUICheckbox
+	class GUICheckBox
 {
 public:
 	
-	GUICheckbox();
-	GUICheckbox(Vector2 pos);
+	GUICheckBox();
+	~GUICheckBox();
+	GUICheckBox(Vector2 pos);
 	Color BackgroundColor = WHITE;
 	Color BorderColor = BLACK;
 	bool Checked = false;
@@ -28,17 +29,21 @@ public:
 	std::string Text = "";
  
 };
-	GUICheckbox::GUICheckbox() {
+	GUICheckBox::GUICheckBox() {
 
 	}
-	GUICheckbox::GUICheckbox(Vector2 pos)
+	GUICheckBox::~GUICheckBox() {
+		UnloadFont(this->Font);
+	}
+	GUICheckBox::GUICheckBox(Vector2 pos)
 	{
 		this->Position = pos;
 	}
 	 
 	 
-	void GUICheckbox::Render()
+	void GUICheckBox::Render()
 	{
+		this->Event.Reset();
 		Vector2 XSize = MeasureTextEx(this->Font,"X", this->Font.baseSize, 0);
 		Rectangle realchkbox;
 		realchkbox.x = this->Position.x;
