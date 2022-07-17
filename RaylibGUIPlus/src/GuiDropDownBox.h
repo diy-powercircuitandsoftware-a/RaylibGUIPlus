@@ -13,32 +13,35 @@ namespace RaylibGUIPlus {
 	class GuiDropDownBox
 {
 public:
-	
 	GuiDropDownBox();
+	~GuiDropDownBox();
 	GuiDropDownBox(Rectangle rect);
 	void  AddListItem(ListItem l);
 	void  AdjustmentHeight();
 	Color BackgroundColor = RAYWHITE;
 	Color BorderColor = BLACK;
-	Color HoverColor = BLUE;
-	Event Event;
-	Color TextColor = BLACK;
 	int BorderSize = 1;
-	Font Font = GetFontDefault(); 
+	Event Event;
+	Font Font = GetFontDefault();
+	Color HoverColor = BLUE;
 	Rectangle Position;
+	bool ReadOnly = false;
 	void Render();
-	int ReadOnly = false;
 	RaylibGUIPlus::Alignment TextAlignment = Alignment::Left;
+	Color TextColor = BLACK;
 	ListItem Value ;
 	 
 private:
 	bool toggle = false;
 	std::vector<ListItem> list;
 	Vector2 DrawAlignment(Rectangle rect,std::string s);
-	 
+	void DrawNormalMode (Vector2 pos,bool mousepress, Vector2 mousepoint, int vtextposx);
 };
 	GuiDropDownBox::GuiDropDownBox() {
 
+	}
+	GuiDropDownBox::~GuiDropDownBox() {
+		UnloadFont(this->Font);
 	}
 	GuiDropDownBox::GuiDropDownBox(Rectangle rect)
 	{
@@ -98,6 +101,42 @@ private:
 
 		return textpos;
 	}
+	void GuiDropDownBox::DrawNormalMode(Vector2 pos,bool mousepress,Vector2 mousepoint,int vtextposx) {
+ 
+		
+		Rectangle listposition = this->Position;
+		listposition.y = listposition.y + pos.y;
+		listposition.width = listposition.width + vtextposx;
+		DrawRectangle(
+			listposition.x - this->BorderSize,
+			listposition.y - this->BorderSize,
+			listposition.width + (this->BorderSize * 2),
+			(listposition.height * this->list.size()) + ((this->BorderSize + 1) * 2),
+			this->BorderColor);
+		for (int i = 0; i < this->list.size(); i++) {
+			bool listcollision = CheckCollisionPointRec(mousepoint, listposition);
+			Color bg = this->BackgroundColor;
+			if (listcollision) {
+				bg = this->HoverColor;
+			}
+			if (listcollision && mousepress) {
+				this->Value = this->list.at(i);
+				this->toggle = false;
+				break;
+			}
+			DrawRectangle(
+				listposition.x,
+				listposition.y,
+				listposition.width,
+				listposition.height,
+				bg);
+			listposition.width = listposition.width - vtextposx;
+			pos = this->DrawAlignment(listposition, this->list.at(i).text);
+			listposition.width = listposition.width + vtextposx;
+			listposition.y = listposition.y + pos.y + 1;
+		}
+		 
+	}
 	void GuiDropDownBox::Render()
 	{
 		this->Event.Reset();
@@ -116,7 +155,7 @@ private:
 			this->Position.x+ this->Position.width+ (this->BorderSize * 2),
 				this->Position.y
 			}, this->Font.baseSize, 0, this->BackgroundColor);
-	 
+		 
 		DrawRectangle(
 			this->Position.x,
 			this->Position.y,
@@ -127,50 +166,17 @@ private:
 			this->Position.width = this->Position.width + vtextposx;
 			bool collision = CheckCollisionPointRec(mousepoint, this->Position);
 			bool mousepress = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
-			 
+			this->Position.width = this->Position.width - vtextposx;
 		if (collision && mousepress&& !this->ReadOnly) {
 			this->toggle = !this->toggle;
 		}else if (collision && mousepress && this->ReadOnly) {
 			this->toggle = false;
 		}
-		 
 		this->Event.MouseDown = collision && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
-		this->Position.width = this->Position.width - vtextposx;
-		 
 		Vector2 textpos = this->DrawAlignment(this->Position, this->Value.text);
 
 		if (this->toggle) {
-			Rectangle listposition=this->Position;
-			listposition.y = listposition.y + textpos.y;
-			listposition.width = listposition.width + vtextposx;
-			DrawRectangle(
-				listposition.x- this->BorderSize,
-				listposition.y- this->BorderSize,
-				listposition.width+ (this->BorderSize*2),
-				(listposition.height* this->list.size()) + ((this->BorderSize+1) * 2),
-				this->BorderColor);
-			for (int i = 0; i < this->list.size(); i++) {
-				bool listcollision = CheckCollisionPointRec(mousepoint, listposition);
-				Color bg = this->BackgroundColor;
-				if (listcollision) {
-					 bg = this->HoverColor;
-				}
-				if (listcollision&&mousepress) {
-					this->Value = this->list.at(i);
-					this->toggle = false;
-					break;
-				}
-				DrawRectangle(
-					 listposition.x,
-					 listposition.y,
-					 listposition.width,
-					 listposition.height,
-					bg);
-				listposition.width = listposition.width - vtextposx;
-				textpos = this->DrawAlignment(listposition, this->list.at(i).text);
-				listposition.width = listposition.width+ vtextposx;
-				listposition.y = listposition.y + textpos.y+1;
-			}
+		 	this->DrawNormalMode(textpos, mousepress,  mousepoint,  vtextposx);
 			 
 		}
 		if (!collision && mousepress) {

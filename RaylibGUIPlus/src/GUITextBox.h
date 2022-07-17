@@ -22,17 +22,17 @@ public:
 	void AdjustmentHeight();
 	Color BackgroundColor = WHITE;
 	Color BorderColor = BLACK;
-	Event Event;
-	Color TextColor = BLACK;
 	int BorderSize = 1;
+	Event Event;
 	Font Font = GetFontDefault();
 	int MaxLength = 25;
 	Rectangle Position;
+	bool ReadOnly = false;
 	void Render();
-	int ReadOnly = false;
 	RaylibGUIPlus::Alignment TextAlignment = Alignment::Left;
-	std::string Value = "";
 	TextBoxType TextBoxType= TextBoxType::Text;
+	Color TextColor = BLACK;
+	std::string Value = "";
 private:
 	bool focus = false;
 	int insertindex = -1;

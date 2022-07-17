@@ -16,17 +16,15 @@ public:
 	GUICheckBox(Vector2 pos);
 	Color BackgroundColor = WHITE;
 	Color BorderColor = BLACK;
-	bool Checked = false;
-	Event Event;
-	Color TextColor = BLACK;
 	int BorderSize = 1;
+	bool Checked = false;
+	bool Enable = true;
+	Event Event;
 	Font Font = GetFontDefault();
-	 
 	Vector2 Position;
 	void Render();
-	int Enable = true;
-	 
 	std::string Text = "";
+	Color TextColor = BLACK;
  
 };
 	GUICheckBox::GUICheckBox() {

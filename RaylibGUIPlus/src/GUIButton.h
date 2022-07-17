@@ -19,16 +19,15 @@ public:
 	void AdjustmentSizes();
 	Color BackgroundColor = RAYWHITE;
 	Color BorderColor = BLACK;
-	Event Event;
-	Color TextColor = BLACK;
 	int BorderSize = 1;
+	bool Enable = true;
+	Event Event;
 	Font Font = GetFontDefault();
-	 
 	Rectangle Position;
 	void Render();
-	int Enable = true;
 	RaylibGUIPlus::Alignment TextAlignment = Alignment::Left;
 	std::string Text = "Button";
+	Color TextColor = BLACK;
  
 };
 	GUIButton::GUIButton() {
@@ -67,8 +66,6 @@ public:
 		std::string clonetext = this->Text;
 		Vector2 textpos;
 		textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 0);
-
-		 
 			while (textpos.x > this->Position.width) {
 				clonetext.erase(0, 1);
 				textpos = MeasureTextEx(this->Font, clonetext.c_str(), this->Font.baseSize, 1);

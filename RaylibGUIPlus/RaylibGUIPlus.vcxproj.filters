@@ -16,14 +16,8 @@
     <Filter Include="Header Files\Properties">
       <UniqueIdentifier>{6c7a5419-d2a8-4ae7-addd-50fc683d27cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Test">
-      <UniqueIdentifier>{4341e992-4c55-4f3d-8d33-b1989311c4a6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\DataUI">
       <UniqueIdentifier>{a7b571ed-52b6-4fe7-992e-a3a2bc5063c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\test">
-      <UniqueIdentifier>{50df4b62-0241-4217-a793-95f9bea7d564}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,13 +42,19 @@
     <ClInclude Include="src\DataUI\ListItem.h">
       <Filter>Header Files\DataUI</Filter>
     </ClInclude>
-    <ClInclude Include="test\raygui.h">
-      <Filter>Header Files\test</Filter>
+    <ClInclude Include="src\GuiProgressBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GuiScrollBar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Properties\Orientation.h">
+      <Filter>Header Files\Properties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test\Test.cpp">
-      <Filter>Source Files\Test</Filter>
+    <ClCompile Include="src\RaylibGUIPlus.h">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
