@@ -35,7 +35,6 @@ public:
 	std::string Value = "";
 private:
 	bool focus = false;
-	int insertindex = -1;
 	 
 };
 
@@ -51,8 +50,7 @@ private:
 	}
 	 
 	void GUITextBox::AdjustmentHeight() {		 
-		this->Position.height = this->Font.baseSize ;
-		 	
+		this->Position.height = this->Font.baseSize ;		 	
 	}
 	void GUITextBox::Render()
 	{
@@ -84,7 +82,7 @@ private:
 		 
 		if (!this->ReadOnly && this->focus) {
 
-			if ((this->Value.length() < (this->MaxLength - 1)) && (!IsKeyPressed(KEY_BACKSPACE))) {
+			if ((this->Value.length() < (this->MaxLength - 1)) && (!IsKeyDown(KEY_BACKSPACE))) {
 
 				int key = GetCharPressed();
 				if (key > 0) {
@@ -94,21 +92,12 @@ private:
 					{
 						if (this->TextBoxType == TextBoxType::Number) {
 							if (isdigit(textUTF8[i])) {
-								if (insertindex == -1) {
-									this->Value = this->Value + textUTF8[i];
-								}
-								else {
-								}
+								this->Value = this->Value + textUTF8[i];
 								
-							}
-							
+							}							
 						}
 						else {
-							if (insertindex == -1) {
-								this->Value = this->Value + textUTF8[i];
-							}
-							else {
-							}
+							this->Value = this->Value + textUTF8[i];
 						}
 						
 					}
@@ -118,20 +107,17 @@ private:
 
 			}
 			else if (IsKeyPressed(KEY_BACKSPACE) && this->Value.length() > 0) {
+				 
 				this->Value.pop_back();
 				this->Event.KeyDown = true;
+				
 			}
 			if ((IsKeyDown(KEY_LEFT_CONTROL)|| IsKeyDown(KEY_RIGHT_CONTROL))&& IsKeyPressed(KEY_V)) {
 				std::string input= GetClipboardText();
 				if (this->TextBoxType==TextBoxType::Number) {	
 						std::regex integer("(\\+|-)?[[:digit:]]+");
 						if (regex_match(input, integer)) {
-							if (insertindex == -1) {
-								this->Value = this->Value + input;
-							}
-							else {
-							}
-							
+							this->Value = this->Value + input;						
 						}
 				}
 				else {
@@ -206,10 +192,6 @@ private:
 				startdraw.x = this->Position.x +this->Position.width;
 			}
 			DrawLineEx(startdraw, (Vector2) { startdraw.x, startdraw.y + textpos.y }, this->Font.baseSize*0.1, this->TextColor);
-			
-			if (collision && mousepress) {
-
-			}
 
 		}
 
