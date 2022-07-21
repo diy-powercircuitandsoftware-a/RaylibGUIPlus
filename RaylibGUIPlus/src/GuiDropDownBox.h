@@ -1,8 +1,9 @@
-#ifndef GuiDropDownBox_H
-#define GuiDropDownBox_H
-#include "raylib.h"
+#ifndef GUIDropDownBox_H
+#define GUIDropDownBox_H
+
 #include "Properties/Alignment.h"
-#include "Properties/Event.h"
+ 
+#include "GUIComponent.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -10,26 +11,18 @@
 
  
 namespace RaylibGUIPlus {
-	class GuiDropDownBox
+	class GUIDropDownBox : public GUIComponent
 {
 public:
-	GuiDropDownBox();
-	~GuiDropDownBox();
-	GuiDropDownBox(Rectangle rect);
+	 
+	GUIDropDownBox(Rectangle rect);
 	void  AddListItem(ListItem l);
-	void  AdjustmentHeight();
-	Color BackgroundColor = RAYWHITE;
-	Color BorderColor = BLACK;
-	int BorderSize = 1;
-	Event Event;
-	Font Font = GetFontDefault();
 	Color HoverColor = BLUE;
-	Rectangle Position;
-	bool ReadOnly = false;
-	void Render();
 	RaylibGUIPlus::Alignment TextAlignment = Alignment::Left;
 	Color TextColor = BLACK;
 	ListItem Value ;
+	virtual void AdjustmentSize();
+	virtual void Render();
 	 
 private:
 	bool toggle = false;
@@ -37,24 +30,20 @@ private:
 	Vector2 DrawAlignment(Rectangle rect,std::string s);
 	void DrawNormalMode (Vector2 pos,bool mousepress, Vector2 mousepoint, int vtextposx);
 };
-	GuiDropDownBox::GuiDropDownBox() {
-
-	}
-	GuiDropDownBox::~GuiDropDownBox() {
-		UnloadFont(this->Font);
-	}
-	GuiDropDownBox::GuiDropDownBox(Rectangle rect)
+	 
+	 
+	GUIDropDownBox::GUIDropDownBox(Rectangle rect)
 	{
-		this->Position = rect;
+		this->Rect = rect;
 	}
-	void GuiDropDownBox::AddListItem(ListItem l) {  
+	void GUIDropDownBox::AddListItem(ListItem l) {  
 		this->list.push_back(l);
 		this->Value = l;
 	}
-	void GuiDropDownBox::AdjustmentHeight() {
-		this->Position.height = this->Font.baseSize ;
+	void GUIDropDownBox::AdjustmentSize() {
+		this->Rect.height = this->Font.baseSize ;
 	}
-	Vector2 GuiDropDownBox::DrawAlignment(Rectangle rect, std::string s ) {
+	Vector2 GUIDropDownBox::DrawAlignment(Rectangle rect, std::string s ) {
 		  
 		Vector2 textpos;
 		textpos = MeasureTextEx(this->Font, s.c_str(), this->Font.baseSize, 0);
@@ -101,10 +90,10 @@ private:
 
 		return textpos;
 	}
-	void GuiDropDownBox::DrawNormalMode(Vector2 pos,bool mousepress,Vector2 mousepoint,int vtextposx) {
+	void GUIDropDownBox::DrawNormalMode(Vector2 pos,bool mousepress,Vector2 mousepoint,int vtextposx) {
  
 		
-		Rectangle listposition = this->Position;
+		Rectangle listposition = this->Rect;
 		listposition.y = listposition.y + pos.y;
 		listposition.width = listposition.width + vtextposx;
 		DrawRectangle(
@@ -137,43 +126,43 @@ private:
 		}
 		 
 	}
-	void GuiDropDownBox::Render()
+	void GUIDropDownBox::Render()
 	{
 		this->Event.Reset();
 		int vtextposx = MeasureTextEx(this->Font, "V", this->Font.baseSize, 0).x*1.2;
 
 		DrawRectangle(
-			this->Position.x- this->BorderSize,
-			this->Position.y- this->BorderSize,
-			this->Position.width+ vtextposx + (this->BorderSize*2),
-			this->Position.height+ (this->BorderSize*2),
+			this->Rect.x- this->BorderSize,
+			this->Rect.y- this->BorderSize,
+			this->Rect.width+ vtextposx + (this->BorderSize*2),
+			this->Rect.height+ (this->BorderSize*2),
 			this->BorderColor);
 			
 		DrawTextEx(this->Font,
 			"V",
 			(Vector2){
-			this->Position.x+ this->Position.width+ (this->BorderSize * 2),
-				this->Position.y
+			this->Rect.x+ this->Rect.width+ (this->BorderSize * 2),
+				this->Rect.y
 			}, this->Font.baseSize, 0, this->BackgroundColor);
 		 
 		DrawRectangle(
-			this->Position.x,
-			this->Position.y,
-			this->Position.width,
-			this->Position.height,
+			this->Rect.x,
+			this->Rect.y,
+			this->Rect.width,
+			this->Rect.height,
 			this->BackgroundColor);
 			Vector2 mousepoint = GetMousePosition();
-			this->Position.width = this->Position.width + vtextposx;
-			bool collision = CheckCollisionPointRec(mousepoint, this->Position);
+			this->Rect.width = this->Rect.width + vtextposx;
+			bool collision = CheckCollisionPointRec(mousepoint, this->Rect);
 			bool mousepress = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
-			this->Position.width = this->Position.width - vtextposx;
-		if (collision && mousepress&& !this->ReadOnly) {
+			this->Rect.width = this->Rect.width - vtextposx;
+		if (collision && mousepress&& this->Enable) {
 			this->toggle = !this->toggle;
-		}else if (collision && mousepress && this->ReadOnly) {
+		}else if (collision && mousepress && !this->Enable) {
 			this->toggle = false;
 		}
 		this->Event.MouseDown = collision && IsMouseButtonDown(MOUSE_LEFT_BUTTON);
-		Vector2 textpos = this->DrawAlignment(this->Position, this->Value.text);
+		Vector2 textpos = this->DrawAlignment(this->Rect, this->Value.text);
 
 		if (this->toggle) {
 		 	this->DrawNormalMode(textpos, mousepress,  mousepoint,  vtextposx);

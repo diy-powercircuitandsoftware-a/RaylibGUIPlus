@@ -147,12 +147,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\GUIComponent.h" />
     <ClInclude Include="src\DataUI\ListItem.h" />
     <ClInclude Include="src\GUIButton.h" />
     <ClInclude Include="src\GUICheckBox.h" />
-    <ClInclude Include="src\GuiDropDownBox.h" />
-    <ClInclude Include="src\GuiProgressBar.h" />
-    <ClInclude Include="src\GuiScrollBar.h" />
+    <ClInclude Include="src\GUIDropDownBox.h" />
+    <ClInclude Include="src\GUIProgressBar.h" />
+    <ClInclude Include="src\GUIScrollBar.h" />
     <ClInclude Include="src\GUITextBox.h" />
     <ClInclude Include="src\Properties\Alignment.h" />
     <ClInclude Include="src\Properties\Event.h" />

@@ -1,65 +1,59 @@
-#ifndef GuiProgressBar_H
-#define GuiProgressBar_H
-#include "raylib.h"
+#ifndef GUIProgressBar_H
+#define GUIProgressBar_H
+
 #include <cmath>
 #include <string>
+#include "GUIComponent.h"
 
 
 namespace RaylibGUIPlus {
-	class GuiProgressBar
+	class GUIProgressBar : public GUIComponent
 	{
 	public:
-		GuiProgressBar();
-		~GuiProgressBar();
-		GuiProgressBar(Rectangle rect);
-		void AdjustmentSizes();
-		Color BackgroundColor = RAYWHITE;
-		Color BorderColor = BLACK;
-		int BorderSize = 1;
-		Font Font = GetFontDefault();
-		Rectangle Position;
+	
+	 
+		GUIProgressBar(Rectangle rect);
+		 
+		 
+		 
 		Color ProgressColor = DARKGREEN;
-		void Render();
-		Color TextColor = BLACK;
+		  
 		float Value;
+		virtual void AdjustmentSize();
+		virtual void Render();
 	};
-	GuiProgressBar::GuiProgressBar() {
-
-	}
-	GuiProgressBar::~GuiProgressBar() {
-		UnloadFont(this->Font);
-	}
-	GuiProgressBar::GuiProgressBar(Rectangle rect)
+	
+	GUIProgressBar::GUIProgressBar(Rectangle rect)
 	{
-		this->Position = rect;
+		this->Rect = rect;
 	}
 
-	void GuiProgressBar::AdjustmentSizes() {
-		this->Position.height = this->Font.baseSize;
-		this->Position.width =std::max(this->Position.width, MeasureTextEx(this->Font, "100%", this->Font.baseSize, 0).x);
+	void GUIProgressBar::AdjustmentSize() {
+		this->Rect.height = this->Font.baseSize;
+		this->Rect.width =std::max(this->Rect.width, MeasureTextEx(this->Font, "100%", this->Font.baseSize, 0).x);
 	}
-	void GuiProgressBar::Render()
+	void GUIProgressBar::Render()
 	{
 	 
 		DrawRectangle(
-			this->Position.x - this->BorderSize,
-			this->Position.y - this->BorderSize,
-			this->Position.width + (this->BorderSize * 2),
-			this->Position.height + (this->BorderSize * 2),
+			this->Rect.x - this->BorderSize,
+			this->Rect.y - this->BorderSize,
+			this->Rect.width + (this->BorderSize * 2),
+			this->Rect.height + (this->BorderSize * 2),
 			this->BorderColor);
 
 		DrawRectangle(
-			this->Position.x,
-			this->Position.y,
-			this->Position.width,
-			this->Position.height,
+			this->Rect.x,
+			this->Rect.y,
+			this->Rect.width,
+			this->Rect.height,
 			this->BackgroundColor);
 
 		DrawRectangle(
-			this->Position.x,
-			this->Position.y,
-			this->Position.width* this->Value,
-			this->Position.height,
+			this->Rect.x,
+			this->Rect.y,
+			this->Rect.width* this->Value,
+			this->Rect.height,
 			this->ProgressColor);
 		
 		 
@@ -70,11 +64,11 @@ namespace RaylibGUIPlus {
 
 		Vector2 startdraw;
 		float posx;
-		posx = (this->Position.width / 2) - (textpos.x / 2);
-		posx = posx + this->Position.x;
+		posx = (this->Rect.width / 2) - (textpos.x / 2);
+		posx = posx + this->Rect.x;
 		startdraw = (Vector2)
 		{
-		posx , this->Position.y
+		posx , this->Rect.y
 		};
 		 
 		DrawTextEx(this->Font,

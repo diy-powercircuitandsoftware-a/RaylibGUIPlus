@@ -36,20 +36,23 @@
     <ClInclude Include="src\GUICheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GuiDropDownBox.h">
+    <ClInclude Include="src\GUIDropDownBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DataUI\ListItem.h">
       <Filter>Header Files\DataUI</Filter>
     </ClInclude>
-    <ClInclude Include="src\GuiProgressBar.h">
+    <ClInclude Include="src\GUIProgressBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\GuiScrollBar.h">
+    <ClInclude Include="src\GUIScrollBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Properties\Orientation.h">
       <Filter>Header Files\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUIComponent.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

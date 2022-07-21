@@ -1,52 +1,39 @@
-#ifndef GuiScrollBar_H
-#define GuiScrollBar_H
-#include "raylib.h"
+#ifndef GUIScrollBar_H
+#define GUIScrollBar_H
+
 #include <cmath>
 #include <string>
-#include "Properties/Event.h"
+ 
 #include "Properties/Orientation.h"
-
+#include "GUIComponent.h"
 
 namespace RaylibGUIPlus {
-	class GuiScrollBar
+	class GUIScrollBar: public GUIComponent
 	{
 	public:		 
-		GuiScrollBar();
-		~GuiScrollBar();
-		GuiScrollBar(Rectangle rect);
-		void AdjustmentSizes();		
-		Color BackgroundColor = RAYWHITE;
-		int BorderSize = 1;
-		Color BorderColor = BLACK;
-		bool Enable = true;
-		Event Event;
-		Font Font = GetFontDefault();	
-		Rectangle Position;
-		void Render();
+	
+		GUIScrollBar(Rectangle rect);
 		Color ScrollColor = DARKGREEN;
 		Color TextColor = BLACK;
 		float Min = 0;
 		float Max = 1;
 		float Value=0;
+		 
+		virtual void Render();
 	private:
 		Orientation orientation = Orientation::Horizontal;
 		Rectangle slider;
 
 	};
-	GuiScrollBar::GuiScrollBar() {
-		
-	}
-	GuiScrollBar::~GuiScrollBar() {
-		UnloadFont(this->Font);
-	}
-	GuiScrollBar::GuiScrollBar(Rectangle rect)
+	
+	GUIScrollBar::GUIScrollBar(Rectangle rect)
 	{
-		this->Position = rect;
+		this->Rect = rect;
 	 
-		this->slider.x=	this->Position.x;
-		this->slider.y=this->Position.y;
-		this->slider.width=this->Position.width;
-		this->slider.height=this->Position.height;
+		this->slider.x=	this->Rect.x;
+		this->slider.y=this->Rect.y;
+		this->slider.width=this->Rect.width;
+		this->slider.height=this->Rect.height;
 		
 		
 		if (rect.width <= rect.height) {
@@ -60,25 +47,22 @@ namespace RaylibGUIPlus {
 		
 	}
 
-	void GuiScrollBar::AdjustmentSizes() {
-		this->Position.height = this->Font.baseSize;
-		this->Position.width =std::max(this->Position.width, MeasureTextEx(this->Font, "^", this->Font.baseSize, 0).x);
-	}
-	void GuiScrollBar::Render()
+ 
+	void GUIScrollBar::Render()
 	{
 	 
 		DrawRectangle(
-			this->Position.x - this->BorderSize,
-			this->Position.y - this->BorderSize,
-			this->Position.width + (this->BorderSize * 2),
-			this->Position.height + (this->BorderSize * 2),
+			this->Rect.x - this->BorderSize,
+			this->Rect.y - this->BorderSize,
+			this->Rect.width + (this->BorderSize * 2),
+			this->Rect.height + (this->BorderSize * 2),
 			this->BorderColor);
 
 		DrawRectangle(
-			this->Position.x,
-			this->Position.y,
-			this->Position.width,
-			this->Position.height,
+			this->Rect.x,
+			this->Rect.y,
+			this->Rect.width,
+			this->Rect.height,
 			this->BackgroundColor);
 
 		DrawRectangle(
@@ -89,19 +73,19 @@ namespace RaylibGUIPlus {
 				this->ScrollColor);
 	 
 		if (this->orientation == Orientation::Horizontal) {
-			this->slider.x = this->Position.x +  (((float)(this->Value - this->Min) / this->Max - this->Min) * (this->Position.width - this->slider.width));
+			this->slider.x = this->Rect.x +  (((float)(this->Value - this->Min) / this->Max - this->Min) * (this->Rect.width - this->slider.width));
 		}
 		else {	  
-			this->slider.y = this->Position.y + (((float)(this->Value - this->Min) / this->Max - this->Min) * (this->Position.height - this->slider.height));
+			this->slider.y = this->Rect.y + (((float)(this->Value - this->Min) / this->Max - this->Min) * (this->Rect.height - this->slider.height));
 		}
 		Vector2 mousePoint = GetMousePosition();
-		this->Event.MouseDown = CheckCollisionPointRec(mousePoint, this->Position) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && this->Enable;
+		this->Event.MouseDown = CheckCollisionPointRec(mousePoint, this->Rect) && IsMouseButtonDown(MOUSE_LEFT_BUTTON) && this->Enable;
 		if (this->Event.MouseDown) {
 			if (this->orientation == Orientation::Horizontal) {
-				this->Value = (int)(((float)(mousePoint.x - this->Position.x - slider.width / 2) * this->Max - this->Min) / (this->Position.width - slider.width) + this->Min);
+				this->Value = (int)(((float)(mousePoint.x - this->Rect.x - slider.width / 2) * this->Max - this->Min) / (this->Rect.width - slider.width) + this->Min);
 			}
 			else {
-				this->Value = (int)(((float)(mousePoint.y - this->Position.y - slider.height / 2) * this->Max - this->Min) / (this->Position.height - slider.height) + this->Min);
+				this->Value = (int)(((float)(mousePoint.y - this->Rect.y - slider.height / 2) * this->Max - this->Min) / (this->Rect.height - slider.height) + this->Min);
 			}
 		}
 		if (this->Value > this->Max) this->Value = this->Max;
